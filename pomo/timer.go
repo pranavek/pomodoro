@@ -20,6 +20,7 @@ func Run() {
 
 	for carryOn == true {
 		fmt.Println("Starting pomodoro timer (25 minutes)")
+		alert("It's time to get into the flow")
 
 		time.Sleep(25 * time.Minute)
 		fmt.Println("End of pomodoro interval")
