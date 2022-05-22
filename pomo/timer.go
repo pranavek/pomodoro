@@ -25,13 +25,7 @@ func Run() {
 		time.Sleep(25 * time.Minute)
 		fmt.Println("End of pomodoro interval")
 
-		err := beeep.Beep(beeep.DefaultFreq, beeep.DefaultDuration)
-		if err != nil {
-			panic(err)
-		}
-
 		pomoCount += 1
-
 		fmt.Println("Check Marks:", pomoCount)
 
 		if pomoCount == 4 {
