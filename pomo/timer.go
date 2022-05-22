@@ -15,7 +15,7 @@ func Run() {
 	for carryOn == true {
 		fmt.Println("Starting pomodoro timer (25 minutes)")
 
-		time.Sleep(2 * time.Second) // time.Minute)
+		time.Sleep(25 * time.Minute)
 		fmt.Println("End of pomodoro interval")
 
 		err := beeep.Alert("Pomodoro", "End of Pomodoro", "assets/information.png")
