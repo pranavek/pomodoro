@@ -34,16 +34,16 @@ func Run() {
 		fmt.Println("Check Marks:", pomoCount)
 
 		if pomoCount == 4 {
-			fmt.Println("Take a long break - 30 minutes")
+			fmt.Println("Take a long breaktime - 30 minutes")
 			alert("Take a long break - 30 minutes")
 			time.Sleep(30 * time.Minute)
-			alert("10 minutes break over")
+			alert("30 minutes breaktime is over")
 			pomoCount = 0
 		} else {
-			fmt.Println("Take a short break - 5 minutes")
-			alert("Take a short break - 5 minutes")
+			fmt.Println("Take a short breaktime - 5 minutes")
+			alert("Take a short breaktime - 5 minutes")
 			time.Sleep(5 * time.Minute)
-			alert("5 minutes break over")
+			alert("5 minutes breaktime is over")
 		}
 
 		//Ask for input to set carryon as true or false
