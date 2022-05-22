@@ -7,6 +7,12 @@ import (
 	"github.com/gen2brain/beeep"
 )
 
+func alert(message string) {
+	if err := beeep.Alert("Pomodoro", message, "assets/information.png"); err != nil {
+		panic(err)
+	}
+}
+
 func Run() {
 
 	pomoCount := 0
@@ -18,12 +24,7 @@ func Run() {
 		time.Sleep(25 * time.Minute)
 		fmt.Println("End of pomodoro interval")
 
-		err := beeep.Alert("Pomodoro", "End of Pomodoro", "assets/information.png")
-		if err != nil {
-			panic(err)
-		}
-
-		err = beeep.Beep(beeep.DefaultFreq, beeep.DefaultDuration)
+		err := beeep.Beep(beeep.DefaultFreq, beeep.DefaultDuration)
 		if err != nil {
 			panic(err)
 		}
@@ -34,11 +35,15 @@ func Run() {
 
 		if pomoCount == 4 {
 			fmt.Println("Take a long break - 30 minutes")
+			alert("Take a long break - 30 minutes")
 			time.Sleep(30 * time.Minute)
+			alert("10 minutes break over")
 			pomoCount = 0
 		} else {
 			fmt.Println("Take a short break - 5 minutes")
+			alert("Take a short break - 5 minutes")
 			time.Sleep(5 * time.Minute)
+			alert("5 minutes break over")
 		}
 
 		//Ask for input to set carryon as true or false
