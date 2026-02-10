@@ -18,34 +18,6 @@ A cross-platform command-line implementation of the [Pomodoro Technique](https:/
 
 Download the latest release for your platform from the [releases page](../../releases):
 
-**Linux (amd64):**
-```bash
-curl -LO https://github.com/pranavek/pomodoro/releases/latest/download/pomodoro-linux-amd64
-chmod +x pomodoro-linux-amd64
-sudo mv pomodoro-linux-amd64 /usr/local/bin/pomo
-```
-
-**Linux (arm64):**
-```bash
-curl -LO https://github.com/pranavek/pomodoro/releases/latest/download/pomodoro-linux-arm64
-chmod +x pomodoro-linux-arm64
-sudo mv pomodoro-linux-arm64 /usr/local/bin/pomo
-```
-
-**macOS (Intel):**
-```bash
-curl -LO https://github.com/pranavek/pomodoro/releases/latest/download/pomodoro-darwin-amd64
-chmod +x pomodoro-darwin-amd64
-sudo mv pomodoro-darwin-amd64 /usr/local/bin/pomo
-```
-
-**macOS (Apple Silicon):**
-```bash
-curl -LO https://github.com/pranavek/pomodoro/releases/latest/download/pomodoro-darwin-arm64
-chmod +x pomodoro-darwin-arm64
-sudo mv pomodoro-darwin-arm64 /usr/local/bin/pomo
-```
-
 ### Build from Source
 
 Requires Go 1.20 or higher:
