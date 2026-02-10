@@ -31,7 +31,7 @@ jobs:
         GOARCH: ${{ matrix.goarch }}
       run: |
         mkdir -p dist
-        go build -v -o dist/pomodoro-${{ matrix.goos }}-${{ matrix.goarch }} ./...
+        go build -v -o dist/pomodoro-${{ matrix.goos }}-${{ matrix.goarch }} .
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
