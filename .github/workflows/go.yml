@@ -1,18 +1,22 @@
-# This workflow will build a golang project
+# This workflow will build a golang project and attach binaries to releases
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
 
-name: Go
+name: Go Release
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [published]
 
 jobs:
 
   build:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64, arm64]
+
     steps:
     - uses: actions/checkout@v3
 
@@ -22,4 +26,19 @@ jobs:
         go-version: '1.20'
 
     - name: Build
-      run: go build -v ./...
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+      run: |
+        mkdir -p dist
+        go build -v -o dist/pomodoro-${{ matrix.goos }}-${{ matrix.goarch }} ./...
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./dist/pomodoro-${{ matrix.goos }}-${{ matrix.goarch }}
+        asset_name: pomodoro-${{ matrix.goos }}-${{ matrix.goarch }}
+        asset_content_type: application/octet-stream
