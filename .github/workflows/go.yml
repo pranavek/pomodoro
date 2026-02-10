@@ -34,11 +34,6 @@ jobs:
         go build -v -o dist/pomodoro-${{ matrix.goos }}-${{ matrix.goarch }} .
 
     - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/pomodoro-${{ matrix.goos }}-${{ matrix.goarch }}
-        asset_name: pomodoro-${{ matrix.goos }}-${{ matrix.goarch }}
-        asset_content_type: application/octet-stream
+        files: ./dist/pomodoro-${{ matrix.goos }}-${{ matrix.goarch }}
