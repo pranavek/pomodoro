@@ -80,18 +80,14 @@ func NewSessionStats() *SessionStats {
 // DisplaySummary prints a summary of the session statistics.
 func (s *SessionStats) DisplaySummary() {
 	elapsed := time.Since(s.StartTime)
-	fmt.Printf("\n")
-	fmt.Printf("  ────────────────────────────────────\n")
-	fmt.Printf("  Session Summary\n")
-	fmt.Printf("  ────────────────────────────────────\n\n")
+	fmt.Printf("\n📊 Session Summary\n")
 	fmt.Printf("  Pomodoros completed: %d\n", s.CompletedPomos)
 	if s.SkippedSessions > 0 {
 		fmt.Printf("  Sessions skipped: %d\n", s.SkippedSessions)
 	}
-	fmt.Printf("  Work time: %s\n", formatDuration(s.TotalWorkTime))
-	fmt.Printf("  Rest time: %s\n", formatDuration(s.TotalBreakTime))
-	fmt.Printf("  Duration: %s\n\n", formatDuration(elapsed))
-	fmt.Printf("  ────────────────────────────────────\n")
+	fmt.Printf("  Total work time: %s\n", formatDuration(s.TotalWorkTime))
+	fmt.Printf("  Total break time: %s\n", formatDuration(s.TotalBreakTime))
+	fmt.Printf("  Session duration: %s\n", formatDuration(elapsed))
 }
 
 // formatDuration formats a duration in a human-readable format.
@@ -110,7 +106,7 @@ func alert(message string) error {
 	err := beeep.Alert("Pomodoro", message, "assets/information.png")
 	if err != nil {
 		// Fall back to console if notifications fail
-		fmt.Printf("\n  Notice: %s\n", message)
+		fmt.Printf("\n🔔 ALERT: %s\n", message)
 		return err
 	}
 	return nil
@@ -119,7 +115,7 @@ func alert(message string) error {
 // promptContinue asks the user if they want to continue with another pomodoro.
 func promptContinue() bool {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("\n  Continue? (y/n): ")
+	fmt.Print("\nContinue with another pomodoro? (y/n): ")
 	response, err := reader.ReadString('\n')
 	if err != nil {
 		// On error, default to quit for safety
@@ -156,52 +152,49 @@ func countdown(duration time.Duration, showCountdown bool) bool {
 	remaining := duration
 	totalMinutes := int(duration.Minutes())
 
-	fmt.Printf("  %d minutes remaining\n", totalMinutes)
-	fmt.Printf("  (press 's' to skip)\n")
+	fmt.Printf("  Time remaining: %d minutes (Press 's' + Enter to skip)\n", totalMinutes)
 
 	for remaining > 0 {
 		select {
 		case <-skipChan:
-			fmt.Printf("\r  Skipped.                                           \n")
+			fmt.Printf("\r  ⏭️  Session skipped!                                           \n")
 			return false
 		case <-ticker.C:
 			remaining -= 1 * time.Minute
 			if remaining > 0 {
 				mins := int(remaining.Minutes())
-				fmt.Printf("\r  %d minutes remaining                              ", mins)
+				fmt.Printf("\r  Time remaining: %d minutes (Press 's' + Enter to skip)   ", mins)
 			}
 		}
 	}
 
-	fmt.Printf("\r  Complete.                                          \n")
+	fmt.Printf("\r  ✅ Time's up!                                                \n")
 	return true
 }
 
 // displayProgress shows a visual representation of pomodoro progress.
 func displayProgress(current, total int) {
-	fmt.Printf("\n  Progress: ")
+	fmt.Printf("\nProgress: ")
 	for i := 1; i <= total; i++ {
 		if i <= current {
-			fmt.Print("▪ ")
+			fmt.Print("✓ ")
 		} else {
-			fmt.Print("▫ ")
+			fmt.Print("○ ")
 		}
 	}
-	fmt.Printf(" %d/%d\n", current, total)
+	fmt.Printf("(%d/%d)\n", current, total)
 }
 
 // runWorkSession executes a work session with countdown and tracking.
 func runWorkSession(config Config, pomoNumber int, stats *SessionStats) bool {
 	mins := int(config.WorkDuration.Minutes())
-	fmt.Printf("\n  ────────────────────────────────────\n")
-	fmt.Printf("  Work Session %d\n", pomoNumber)
-	fmt.Printf("  Duration: %d minutes\n", mins)
-	fmt.Printf("  ────────────────────────────────────\n\n")
-	alert("Begin work")
+	fmt.Printf("\n🎯 Starting pomodoro #%d (%d minutes)\n", pomoNumber, mins)
+	alert("It's time to get into the flow")
 
 	completed := countdown(config.WorkDuration, config.ShowCountdown)
 
 	if completed {
+		fmt.Println("  ✓ Work session completed!")
 		stats.TotalWorkTime += config.WorkDuration
 		return true
 	} else {
@@ -215,29 +208,24 @@ func runBreak(breakType string, duration time.Duration, showCountdown bool, stat
 	mins := int(duration.Minutes())
 	reflection := getReflection(breakType)
 
-	fmt.Printf("\n  ────────────────────────────────────\n")
 	if breakType == "long" {
-		fmt.Printf("  Rest\n")
-		fmt.Printf("  Duration: %d minutes\n", mins)
+		fmt.Printf("\n☕ Take a long break (%d minutes)\n", mins)
+		alert(fmt.Sprintf("Take a long break - %d minutes", mins))
 	} else {
-		fmt.Printf("  Pause\n")
-		fmt.Printf("  Duration: %d minutes\n", mins)
+		fmt.Printf("\n☕ Take a short break (%d minutes)\n", mins)
+		alert(fmt.Sprintf("Take a short break - %d minutes", mins))
 	}
-	fmt.Printf("  ────────────────────────────────────\n\n")
-	fmt.Printf("  %s\n\n", reflection)
 
-	if breakType == "long" {
-		alert(fmt.Sprintf("Rest - %d minutes", mins))
-	} else {
-		alert(fmt.Sprintf("Pause - %d minutes", mins))
-	}
+	fmt.Printf("\n💭 %s\n\n", reflection)
 
 	completed := countdown(duration, showCountdown)
 
 	if completed {
-		alert("Break complete")
+		alert(fmt.Sprintf("%d minute break is over", mins))
+		fmt.Println("  ✓ Break completed!")
 		stats.TotalBreakTime += duration
 	} else {
+		fmt.Println("  Break skipped!")
 		stats.SkippedSessions++
 	}
 }
@@ -249,20 +237,19 @@ func Run(config Config) {
 	pomoCount := 0
 	carryOn := true
 
-	fmt.Println()
-	fmt.Printf("  ────────────────────────────────────\n")
-	fmt.Printf("  Pomodoro\n")
-	fmt.Printf("  ────────────────────────────────────\n\n")
-	fmt.Printf("  Work: %dm\n", int(config.WorkDuration.Minutes()))
-	fmt.Printf("  Pause: %dm\n", int(config.ShortBreakDuration.Minutes()))
-	fmt.Printf("  Rest: %dm\n", int(config.LongBreakDuration.Minutes()))
-	fmt.Printf("\n")
+	fmt.Println("\n🍅 Pomodoro Timer Started!")
+	fmt.Printf("Configuration: %dm work / %dm short break / %dm long break\n",
+		int(config.WorkDuration.Minutes()),
+		int(config.ShortBreakDuration.Minutes()),
+		int(config.LongBreakDuration.Minutes()))
 
 	for carryOn {
 		// Run work session
 		if runWorkSession(config, pomoCount+1, stats) {
 			pomoCount++
 			stats.CompletedPomos++
+
+			fmt.Printf("\n✓ Pomodoro #%d completed!\n", pomoCount)
 			displayProgress(pomoCount, config.PomosUntilLongBreak)
 		}
 
@@ -270,7 +257,7 @@ func Run(config Config) {
 		if pomoCount >= config.PomosUntilLongBreak {
 			runBreak("long", config.LongBreakDuration, config.ShowCountdown, stats)
 			pomoCount = 0
-			fmt.Println()
+			fmt.Println("\n🔄 Starting a new pomodoro cycle!")
 		} else {
 			runBreak("short", config.ShortBreakDuration, config.ShowCountdown, stats)
 		}
@@ -280,5 +267,5 @@ func Run(config Config) {
 	}
 
 	stats.DisplaySummary()
-	fmt.Println()
+	fmt.Println("\n👋 Good bye!")
 }
