@@ -19,9 +19,13 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use:   "pomo",
-	Short: "Pomo helps to implement pomodoro in your workflow",
-	Long: `Pomo is a Pomodoro timer CLI tool that helps you stay focused and productive.
-It implements the Pomodoro Technique with configurable work sessions, short breaks, and long breaks.`,
+	Short: "A minimal timer for focused work and thoughtful reflection",
+	Long: `Pomo is a minimalist Pomodoro timer that encourages deliberate work and reflection.
+
+Inspired by Dieter Rams' principle: less, but better.
+
+Each break presents a question to help you pause and think about your work,
+your approach, and your priorities.`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		// Validate work duration
 		if workDuration < 1 || workDuration > 120 {

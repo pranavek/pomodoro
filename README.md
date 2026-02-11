@@ -1,22 +1,25 @@
-# 🍅 Pomodoro Timer CLI
+# Pomodoro
 
-A cross-platform command-line implementation of the [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) to help you stay focused and productive.
+A minimal command-line timer for focused work and thoughtful reflection.
 
-## ✨ Features
+Inspired by Dieter Rams' design philosophy: less, but better.
 
-- ⏱️ **Customizable timers** - Configure work sessions, short breaks, and long breaks
-- 🔔 **Desktop notifications** - Get notified when sessions start and end
-- ⏭️ **Skip sessions** - Press 's' to skip the current session
-- 📊 **Session statistics** - Track completed pomodoros, work time, and break time
-- 🎯 **Visual progress** - See your progress through the pomodoro cycle
-- 🖥️ **Cross-platform** - Works on Linux and macOS (Intel & Apple Silicon)
-- 💻 **Real-time countdown** - See time remaining updated every minute
+## Philosophy
 
-## 📦 Installation
+This is not just a timer. It's a tool that encourages you to pause, think, and reflect on your work. Each break presents a question designed to help you step back and consider your approach, your progress, and your priorities.
 
-### Download Pre-built Binaries
+Work happens in the doing. Wisdom happens in the pausing.
 
-Download the latest release for your platform from the [releases page](../../releases):
+## Features
+
+- Minimal, distraction-free interface
+- Thoughtful reflection prompts during breaks
+- Configurable work and rest periods
+- Desktop notifications
+- Session tracking
+- Cross-platform (Linux, macOS)
+
+## Installation
 
 ### Build from Source
 
@@ -29,82 +32,90 @@ go build -o pomo .
 sudo mv pomo /usr/local/bin/
 ```
 
-## 🚀 Usage
+Or use the build script:
 
-### Basic Usage
+```bash
+./build.sh
+```
 
-Start a pomodoro timer with default settings (25min work, 5min short break, 30min long break):
+## Usage
+
+### Start with defaults
+
+25 minutes work, 5 minute pause, 30 minute rest:
 
 ```bash
 pomo
 ```
 
-### Custom Configuration
+### Customize durations
 
 ```bash
-# Custom work duration (45 minutes)
+# 45 minute work sessions
 pomo --work 45
 
-# Custom short break (10 minutes)
+# 10 minute pauses
 pomo --short-break 10
 
-# Custom long break (20 minutes)
+# 20 minute rest periods
 pomo --long-break 20
 
-# Change number of pomodoros before long break (default: 4)
+# Take rest after 3 work sessions (instead of 4)
 pomo --count 3
-
-# Disable real-time countdown
-pomo --countdown=false
 ```
 
-### Combined Options
+### Combined example
 
 ```bash
-# 30-minute work sessions with 7-minute breaks
 pomo -w 30 -s 7 -l 15 -c 3
 ```
 
-## ⚙️ Configuration Options
+## Configuration
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
-| `--work` | `-w` | 25 | Work session duration in minutes (1-120) |
-| `--short-break` | `-s` | 5 | Short break duration in minutes (1-60) |
-| `--long-break` | `-l` | 30 | Long break duration in minutes (1-120) |
-| `--count` | `-c` | 4 | Number of pomodoros before a long break (1-10) |
-| `--countdown` | `-d` | true | Show real-time countdown during sessions |
+| `--work` | `-w` | 25 | Work duration (minutes) |
+| `--short-break` | `-s` | 5 | Pause duration (minutes) |
+| `--long-break` | `-l` | 30 | Rest duration (minutes) |
+| `--count` | `-c` | 4 | Work sessions before rest |
+| `--countdown` | `-d` | true | Show countdown timer |
 
-## 🎮 Interactive Controls
+## During a Session
 
-During a session:
-- **Press 's' + Enter** - Skip the current session
-- **Continue prompt** - After each pomodoro cycle, choose whether to continue (y/n)
+- Press `s` then Enter to skip current session
+- After each cycle, choose to continue or review your summary
+- During breaks, reflect on the question presented
 
-## 📊 Session Summary
+## The Questions
 
-At the end of your session, you'll see statistics including:
-- Total pomodoros completed
-- Sessions skipped
-- Total work time
-- Total break time
-- Session duration
+During short pauses, you might be asked:
+- What did you accomplish in this session?
+- What challenged you most?
+- Is your current approach working?
+- Are you working on what matters?
 
-## 🛠️ The Pomodoro Technique
+During longer rest periods:
+- What progress have you made today?
+- Are you solving the right problem?
+- What assumptions should you question?
+- How can you approach this more simply?
 
-The Pomodoro Technique is a time management method:
+These aren't rhetorical. Take a moment. Think.
 
-1. **Work** for 25 minutes (one "pomodoro")
-2. **Short break** for 5 minutes
-3. After 4 pomodoros, take a **long break** (15-30 minutes)
-4. Repeat the cycle
+## Principles
 
-This tool implements this technique with customizable durations to fit your workflow.
+**Less, but better**
+No clutter. No distractions. Just time, work, and thought.
 
-## 📄 License
+**Pause to think**
+The breaks aren't just rest. They're for reflection.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Question your work**
+Are you building the right thing? Could it be simpler?
 
-## 🤝 Contributing
+**Respect the process**
+Deep work requires time and space. This tool protects both.
 
-Contributions are welcome! Feel free to open issues or submit pull requests.
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
