@@ -9,7 +9,7 @@ A cross-platform command-line implementation of the [Pomodoro Technique](https:/
 - ⏭️ **Skip sessions** - Press 's' to skip the current session
 - 📊 **Session statistics** - Track completed pomodoros, work time, and break time
 - 🎯 **Visual progress** - See your progress through the pomodoro cycle
-- 🖥️ **Cross-platform** - Works on Linux and macOS (Intel & Apple Silicon)
+- 🖥️ **Cross-platform** - Works on Linux, macOS (Apple Silicon), and Windows
 - 💻 **Real-time countdown** - See time remaining updated every minute
 - 💭 **Reflection prompts** - Thoughtful questions during breaks to help you pause and think
 
@@ -23,11 +23,20 @@ Download the latest release for your platform from the [releases page](../../rel
 
 Requires Go 1.20 or higher:
 
+**Linux/macOS:**
 ```bash
 git clone https://github.com/pranavek/pomodoro.git
 cd pomodoro
 go build -o pomo .
 sudo mv pomo /usr/local/bin/
+```
+
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/pranavek/pomodoro.git
+cd pomodoro
+go build -o pomo.exe .
+# Add to PATH or move to a directory in your PATH
 ```
 
 ## 🚀 Usage
