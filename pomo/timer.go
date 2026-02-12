@@ -116,14 +116,23 @@ func alert(message string) error {
 // promptContinue asks the user if they want to continue with another pomodoro.
 func promptContinue() bool {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("\nContinue with another pomodoro? (y/n): ")
-	response, err := reader.ReadString('\n')
-	if err != nil {
-		// On error, default to quit for safety
-		return false
+	for {
+		fmt.Print("\nContinue with another pomodoro? (y/n): ")
+		response, err := reader.ReadString('\n')
+		if err != nil {
+			// On error, default to quit for safety
+			return false
+		}
+		response = strings.ToLower(strings.TrimSpace(response))
+		if response == "y" || response == "yes" {
+			return true
+		}
+		if response == "n" || response == "no" {
+			return false
+		}
+		// Invalid input, ask again
+		fmt.Println("Please enter 'y' or 'n'")
 	}
-	response = strings.ToLower(strings.TrimSpace(response))
-	return response == "y" || response == "yes"
 }
 
 // countdown displays a countdown timer or sleeps silently based on config.
@@ -135,15 +144,28 @@ func countdown(duration time.Duration, showCountdown bool) bool {
 		return true
 	}
 
-	// Channel for skip signal
+	// Buffered channel for skip signal
 	skipChan := make(chan bool, 1)
 
 	// Goroutine to listen for skip command
 	go func() {
 		reader := bufio.NewReader(os.Stdin)
-		input, err := reader.ReadString('\n')
-		if err == nil && strings.ToLower(strings.TrimSpace(input)) == "s" {
-			skipChan <- true
+		for {
+			input, err := reader.ReadString('\n')
+			if err != nil {
+				return
+			}
+			if strings.ToLower(strings.TrimSpace(input)) == "s" {
+				// Try to send skip signal
+				select {
+				case skipChan <- true:
+					return
+				default:
+					// Countdown already over
+					return
+				}
+			}
+			// If not 's', continue listening
 		}
 	}()
 
