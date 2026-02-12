@@ -16,6 +16,7 @@ var (
 	pomosBeforeLong int
 	showCountdown   bool
 	sessionTitle    string
+	sessionGoal     string
 )
 
 var rootCmd = &cobra.Command{
@@ -57,6 +58,7 @@ During breaks, it presents reflection prompts to help you think about your work 
 			PomosUntilLongBreak: pomosBeforeLong,
 			ShowCountdown:       showCountdown,
 			SessionTitle:        sessionTitle,
+			SessionGoal:         sessionGoal,
 		}
 
 		// Run the Pomodoro timer
@@ -88,6 +90,10 @@ func init() {
 	// Session title flag
 	rootCmd.Flags().StringVarP(&sessionTitle, "title", "t", "",
 		"Give this session a title/description")
+
+	// Session goal flag
+	rootCmd.Flags().StringVarP(&sessionGoal, "goal", "g", "",
+		"Assign this session to a goal (multiple sessions/titles can share the same goal)")
 }
 
 func Execute() {

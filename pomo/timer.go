@@ -19,6 +19,7 @@ type Config struct {
 	PomosUntilLongBreak int
 	ShowCountdown       bool
 	SessionTitle        string
+	SessionGoal         string
 }
 
 // DefaultConfig returns the default Pomodoro timer configuration.
@@ -261,6 +262,9 @@ func Run(config Config) {
 	carryOn := true
 
 	fmt.Println("\n🍅 Pomodoro Timer Started!")
+	if config.SessionGoal != "" {
+		fmt.Printf("Goal: %s\n", config.SessionGoal)
+	}
 	if config.SessionTitle != "" {
 		fmt.Printf("Session: %s\n", config.SessionTitle)
 	}
@@ -301,6 +305,7 @@ func Run(config Config) {
 			record := SessionRecord{
 				Date:            stats.StartTime,
 				Title:           config.SessionTitle,
+				Goal:            config.SessionGoal,
 				CompletedPomos:  stats.CompletedPomos,
 				SkippedSessions: stats.SkippedSessions,
 				WorkTime:        stats.TotalWorkTime,

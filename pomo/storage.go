@@ -14,6 +14,7 @@ type SessionRecord struct {
 	ID              int           `json:"id"`
 	Date            time.Time     `json:"date"`
 	Title           string        `json:"title,omitempty"`
+	Goal            string        `json:"goal,omitempty"`
 	CompletedPomos  int           `json:"completed_pomos"`
 	SkippedSessions int           `json:"skipped_sessions"`
 	WorkTime        time.Duration `json:"work_time"`
@@ -61,6 +62,7 @@ func (s *Storage) initDB() error {
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		date DATETIME NOT NULL,
 		title TEXT,
+		goal TEXT,
 		completed_pomos INTEGER NOT NULL,
 		skipped_sessions INTEGER NOT NULL,
 		work_time INTEGER NOT NULL,
@@ -69,6 +71,7 @@ func (s *Storage) initDB() error {
 	);
 
 	CREATE INDEX IF NOT EXISTS idx_sessions_date ON sessions(date);
+	CREATE INDEX IF NOT EXISTS idx_sessions_goal ON sessions(goal);
 	`
 
 	_, err := s.db.Exec(schema)
@@ -86,7 +89,7 @@ func (s *Storage) Close() error {
 // LoadRecords loads all session records from the database.
 func (s *Storage) LoadRecords() ([]SessionRecord, error) {
 	query := `
-		SELECT id, date, title, completed_pomos, skipped_sessions,
+		SELECT id, date, title, goal, completed_pomos, skipped_sessions,
 		       work_time, break_time, duration
 		FROM sessions
 		ORDER BY date DESC
@@ -108,6 +111,7 @@ func (s *Storage) LoadRecords() ([]SessionRecord, error) {
 			&r.ID,
 			&dateStr,
 			&r.Title,
+			&r.Goal,
 			&r.CompletedPomos,
 			&r.SkippedSessions,
 			&workTimeNanos,
@@ -132,15 +136,16 @@ func (s *Storage) LoadRecords() ([]SessionRecord, error) {
 // SaveRecord inserts a new session record into the database.
 func (s *Storage) SaveRecord(record SessionRecord) error {
 	query := `
-		INSERT INTO sessions (date, title, completed_pomos, skipped_sessions,
+		INSERT INTO sessions (date, title, goal, completed_pomos, skipped_sessions,
 		                     work_time, break_time, duration)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 	`
 
 	_, err := s.db.Exec(
 		query,
 		record.Date.Format(time.RFC3339),
 		record.Title,
+		record.Goal,
 		record.CompletedPomos,
 		record.SkippedSessions,
 		int64(record.WorkTime),
@@ -154,7 +159,7 @@ func (s *Storage) SaveRecord(record SessionRecord) error {
 // GetRecordsSince returns all records since the given date.
 func (s *Storage) GetRecordsSince(since time.Time) ([]SessionRecord, error) {
 	query := `
-		SELECT id, date, title, completed_pomos, skipped_sessions,
+		SELECT id, date, title, goal, completed_pomos, skipped_sessions,
 		       work_time, break_time, duration
 		FROM sessions
 		WHERE date >= ?
@@ -177,6 +182,7 @@ func (s *Storage) GetRecordsSince(since time.Time) ([]SessionRecord, error) {
 			&r.ID,
 			&dateStr,
 			&r.Title,
+			&r.Goal,
 			&r.CompletedPomos,
 			&r.SkippedSessions,
 			&workTimeNanos,
@@ -201,7 +207,7 @@ func (s *Storage) GetRecordsSince(since time.Time) ([]SessionRecord, error) {
 // GetRecordsInRange returns all records within the given date range.
 func (s *Storage) GetRecordsInRange(start, end time.Time) ([]SessionRecord, error) {
 	query := `
-		SELECT id, date, title, completed_pomos, skipped_sessions,
+		SELECT id, date, title, goal, completed_pomos, skipped_sessions,
 		       work_time, break_time, duration
 		FROM sessions
 		WHERE date >= ? AND date <= ?
@@ -228,6 +234,7 @@ func (s *Storage) GetRecordsInRange(start, end time.Time) ([]SessionRecord, erro
 			&r.ID,
 			&dateStr,
 			&r.Title,
+			&r.Goal,
 			&r.CompletedPomos,
 			&r.SkippedSessions,
 			&workTimeNanos,

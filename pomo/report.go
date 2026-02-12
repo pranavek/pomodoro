@@ -87,7 +87,17 @@ func DisplayDetailedReport(stats *ReportStats, title string) {
 		record := stats.Records[i]
 		date := record.Date.Format("Jan 02, 2006 15:04")
 
-		if record.Title != "" {
+		if record.Goal != "" && record.Title != "" {
+			fmt.Printf("  %s - %s [Goal: %s]\n", date, record.Title, record.Goal)
+			fmt.Printf("    %d 🍅 (%s work)\n",
+				record.CompletedPomos,
+				formatDuration(record.WorkTime))
+		} else if record.Goal != "" {
+			fmt.Printf("  %s - [Goal: %s]\n", date, record.Goal)
+			fmt.Printf("    %d 🍅 (%s work)\n",
+				record.CompletedPomos,
+				formatDuration(record.WorkTime))
+		} else if record.Title != "" {
 			fmt.Printf("  %s - %s\n", date, record.Title)
 			fmt.Printf("    %d 🍅 (%s work)\n",
 				record.CompletedPomos,
