@@ -24,7 +24,7 @@ Download the latest release for your platform from the [releases page](../../rel
 
 ### Build from Source
 
-Requires Go 1.20 or higher:
+Requires Go 1.24 or higher:
 
 **Linux/macOS:**
 ```bash
