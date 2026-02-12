@@ -12,15 +12,15 @@ A cross-platform command-line implementation of the [Pomodoro Technique](https:/
 - 📈 **Detailed reports** - Generate reports for today, this week, month, year, or all time
 - 🎯 **Visual progress** - See your progress through the pomodoro cycle
 - 🎓 **Goal tracking** - Map multiple sessions to larger goals for better organization
-- 🖥️ **Cross-platform** - Works on Linux, macOS (Apple Silicon), and Windows
+- 🖥️ **Cross-platform** - Works on Linux, macOS, and Windows
 - 💻 **Real-time countdown** - See time remaining updated every minute
 - 💭 **Reflection prompts** - Thoughtful questions during breaks to help you pause and think
 
 ## 📦 Installation
 
-### Download Pre-built Binaries
+### Download Pre-built Binaries 
 
-Download the latest release for your platform from the [releases page](../../releases):
+Download the latest release for your platform from the [releases page](../../releases)
 
 ### Build from Source
 
@@ -32,14 +32,6 @@ git clone https://github.com/pranavek/pomodoro.git
 cd pomodoro
 go build -o pomo .
 sudo mv pomo /usr/local/bin/
-```
-
-**Windows (PowerShell):**
-```powershell
-git clone https://github.com/pranavek/pomodoro.git
-cd pomodoro
-go build -o pomo.exe .
-# Add to PATH or move to a directory in your PATH
 ```
 
 ## 🚀 Usage
@@ -126,12 +118,6 @@ pomo report --all --detailed
 | `--countdown` | `-d` | true | Show real-time countdown during sessions |
 | `--title` | `-t` | "" | Give your session a title/description |
 | `--goal` | `-g` | "" | Assign this session to a goal |
-
-## 🎮 Interactive Controls
-
-During a session:
-- **Press 's' + Enter** - Skip the current session
-- **Continue prompt** - After each pomodoro cycle, choose whether to continue (y/n)
 
 ## 💭 Reflection Prompts
 
