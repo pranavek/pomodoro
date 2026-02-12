@@ -131,3 +131,17 @@ func GetYearStart() time.Time {
 	now := time.Now()
 	return time.Date(now.Year(), 1, 1, 0, 0, 0, 0, now.Location())
 }
+
+// GetPreviousWeekStart returns the start of the previous week (Monday).
+func GetPreviousWeekStart() time.Time {
+	currentWeekStart := GetWeekStart()
+	return currentWeekStart.AddDate(0, 0, -7)
+}
+
+// GetPreviousMonthStart returns the start of the previous month.
+func GetPreviousMonthStart() time.Time {
+	now := time.Now()
+	// Go back one month
+	previousMonth := now.AddDate(0, -1, 0)
+	return time.Date(previousMonth.Year(), previousMonth.Month(), 1, 0, 0, 0, 0, now.Location())
+}
