@@ -11,6 +11,7 @@ A cross-platform command-line implementation of the [Pomodoro Technique](https:/
 - 💾 **Persistent history** - Automatically saves session data for historical tracking
 - 📈 **Detailed reports** - Generate reports for today, this week, month, year, or all time
 - 🎯 **Visual progress** - See your progress through the pomodoro cycle
+- 🎓 **Goal tracking** - Map multiple sessions to larger goals for better organization
 - 🖥️ **Cross-platform** - Works on Linux, macOS (Apple Silicon), and Windows
 - 💻 **Real-time countdown** - See time remaining updated every minute
 - 💭 **Reflection prompts** - Thoughtful questions during breaks to help you pause and think
@@ -72,6 +73,15 @@ pomo --countdown=false
 # Give your session a title
 pomo --title "Writing documentation"
 pomo -t "Bug fix: login issue"
+
+# Assign a session to a goal
+pomo --goal "Launch MVP"
+pomo -g "Learn Go"
+
+# Combine goal and title for better tracking
+pomo -g "Launch MVP" -t "Implement user authentication"
+pomo -g "Launch MVP" -t "Design landing page"
+pomo -g "Learn Go" -t "Study concurrency patterns"
 ```
 
 ### Combined Options
@@ -115,6 +125,7 @@ pomo report --all --detailed
 | `--count` | `-c` | 4 | Number of pomodoros before a long break (1-10) |
 | `--countdown` | `-d` | true | Show real-time countdown during sessions |
 | `--title` | `-t` | "" | Give your session a title/description |
+| `--goal` | `-g` | "" | Assign this session to a goal |
 
 ## 🎮 Interactive Controls
 
@@ -149,7 +160,7 @@ At the end of each session, you'll see statistics including:
 - Total break time
 - Session duration
 
-Your session data (including the title if provided) is automatically saved to a SQLite database at `~/.pomo/pomo.db` for future reference.
+Your session data (including the title and goal if provided) is automatically saved to a SQLite database at `~/.pomo/pomo.db` for future reference.
 
 ### Session Titles
 
@@ -163,6 +174,29 @@ pomo -t "Learning React hooks" -w 45
 ```
 
 Titles are displayed during the session and appear in your reports, making it easy to see what you accomplished.
+
+### Goals and Titles
+
+**Goals** let you group multiple sessions (with different titles) under a common objective. This is perfect for tracking progress toward larger projects or learning objectives:
+
+```bash
+# Multiple sessions working toward the same goal
+pomo -g "Launch MVP" -t "Set up database schema"
+pomo -g "Launch MVP" -t "Build REST API"
+pomo -g "Launch MVP" -t "Create landing page"
+pomo -g "Launch MVP" -t "Write tests"
+
+# Different goal, different sessions
+pomo -g "Learn Go" -t "Read Go documentation"
+pomo -g "Learn Go" -t "Build CLI tool"
+pomo -g "Learn Go" -t "Practice concurrency"
+```
+
+**When to use what:**
+- **Goal** - The overarching objective (e.g., "Launch MVP", "Learn Go", "Q1 Sprint")
+- **Title** - The specific task within that goal (e.g., "Implement authentication", "Study channels")
+
+Goals appear alongside titles in detailed reports, making it easy to see all sessions related to a specific objective.
 
 ### Reports
 
