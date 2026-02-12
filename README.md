@@ -8,6 +8,8 @@ A cross-platform command-line implementation of the [Pomodoro Technique](https:/
 - 🔔 **Desktop notifications** - Get notified when sessions start and end
 - ⏭️ **Skip sessions** - Press 's' to skip the current session
 - 📊 **Session statistics** - Track completed pomodoros, work time, and break time
+- 💾 **Persistent history** - Automatically saves session data for historical tracking
+- 📈 **Detailed reports** - Generate reports for today, this week, month, year, or all time
 - 🎯 **Visual progress** - See your progress through the pomodoro cycle
 - 🖥️ **Cross-platform** - Works on Linux, macOS (Apple Silicon), and Windows
 - 💻 **Real-time countdown** - See time remaining updated every minute
@@ -66,6 +68,10 @@ pomo --count 3
 
 # Disable real-time countdown
 pomo --countdown=false
+
+# Give your session a title
+pomo --title "Writing documentation"
+pomo -t "Bug fix: login issue"
 ```
 
 ### Combined Options
@@ -73,6 +79,30 @@ pomo --countdown=false
 ```bash
 # 30-minute work sessions with 7-minute breaks
 pomo -w 30 -s 7 -l 15 -c 3
+```
+
+### Generate Reports
+
+View your pomodoro statistics:
+
+```bash
+# Today's statistics (default)
+pomo report
+
+# This week's statistics
+pomo report --week
+
+# This month's statistics
+pomo report --month
+
+# This year's statistics
+pomo report --year
+
+# All time statistics
+pomo report --all
+
+# Detailed report with session list
+pomo report --all --detailed
 ```
 
 ## ⚙️ Configuration Options
@@ -84,6 +114,7 @@ pomo -w 30 -s 7 -l 15 -c 3
 | `--long-break` | `-l` | 30 | Long break duration in minutes (1-120) |
 | `--count` | `-c` | 4 | Number of pomodoros before a long break (1-10) |
 | `--countdown` | `-d` | true | Show real-time countdown during sessions |
+| `--title` | `-t` | "" | Give your session a title/description |
 
 ## 🎮 Interactive Controls
 
@@ -107,14 +138,57 @@ During breaks, the app presents thoughtful questions to help you pause and refle
 - What assumptions should you question?
 - How can you approach this more simply?
 
-## 📊 Session Summary
+## 📊 Statistics & Reports
 
-At the end of your session, you'll see statistics including:
+### Session Summary
+
+At the end of each session, you'll see statistics including:
 - Total pomodoros completed
 - Sessions skipped
 - Total work time
 - Total break time
 - Session duration
+
+Your session data (including the title if provided) is automatically saved to a SQLite database at `~/.pomo/pomo.db` for future reference.
+
+### Session Titles
+
+Give your pomodoro sessions meaningful titles to track what you're working on:
+
+```bash
+# Start a session with a title
+pomo -t "Implementing user authentication"
+pomo --title "Code review"
+pomo -t "Learning React hooks" -w 45
+```
+
+Titles are displayed during the session and appear in your reports, making it easy to see what you accomplished.
+
+### Reports
+
+Generate reports for different time periods:
+
+**Available time ranges:**
+- `--today` - Today's sessions (default)
+- `--week` - This week's sessions (Monday to Sunday)
+- `--month` - This month's sessions
+- `--year` - This year's sessions
+- `--all` - All recorded sessions
+
+**Report options:**
+- `--detailed` or `-d` - Include a list of recent sessions
+
+**Example reports:**
+```bash
+# Quick view of today
+pomo report
+
+# Weekly summary
+pomo report --week
+
+# Detailed all-time report
+pomo report --all --detailed
+```
 
 ## 🛠️ The Pomodoro Technique
 

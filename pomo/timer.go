@@ -18,6 +18,7 @@ type Config struct {
 	LongBreakDuration   time.Duration
 	PomosUntilLongBreak int
 	ShowCountdown       bool
+	SessionTitle        string
 }
 
 // DefaultConfig returns the default Pomodoro timer configuration.
@@ -238,6 +239,9 @@ func Run(config Config) {
 	carryOn := true
 
 	fmt.Println("\n🍅 Pomodoro Timer Started!")
+	if config.SessionTitle != "" {
+		fmt.Printf("Session: %s\n", config.SessionTitle)
+	}
 	fmt.Printf("Configuration: %dm work / %dm short break / %dm long break\n",
 		int(config.WorkDuration.Minutes()),
 		int(config.ShortBreakDuration.Minutes()),
@@ -267,5 +271,27 @@ func Run(config Config) {
 	}
 
 	stats.DisplaySummary()
+
+	// Save session statistics
+	if stats.CompletedPomos > 0 {
+		storage, err := NewStorage()
+		if err == nil {
+			record := SessionRecord{
+				Date:            stats.StartTime,
+				Title:           config.SessionTitle,
+				CompletedPomos:  stats.CompletedPomos,
+				SkippedSessions: stats.SkippedSessions,
+				WorkTime:        stats.TotalWorkTime,
+				BreakTime:       stats.TotalBreakTime,
+				Duration:        time.Since(stats.StartTime),
+			}
+			if err := storage.SaveRecord(record); err != nil {
+				fmt.Printf("\n⚠️  Warning: Could not save session data: %v\n", err)
+			} else {
+				fmt.Println("✓ Session saved!")
+			}
+		}
+	}
+
 	fmt.Println("\n👋 Good bye!")
 }

@@ -2,7 +2,10 @@ module github.com/pranavek/pomodoro
 
 go 1.17
 
-require github.com/spf13/cobra v1.4.0
+require (
+	github.com/spf13/cobra v1.4.0
+	modernc.org/sqlite v1.29.1
+)
 
 require (
 	github.com/gen2brain/beeep v0.0.0-20220518085355-d7852edf42fc // indirect
