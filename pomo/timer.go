@@ -105,7 +105,7 @@ func formatDuration(d time.Duration) string {
 
 // alert sends a system notification or falls back to console output.
 func alert(message string) error {
-	err := beeep.Alert("Pomodoro", message, "assets/information.png")
+	err := beeep.Alert("🍅 Pomodoro", message, "")
 	if err != nil {
 		// Fall back to console if notifications fail
 		fmt.Printf("\n🔔 ALERT: %s\n", message)
