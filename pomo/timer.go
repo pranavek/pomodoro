@@ -176,7 +176,7 @@ func countdown(duration time.Duration, showCountdown bool) bool {
 	remaining := duration
 	totalMinutes := int(duration.Minutes())
 
-	fmt.Printf("  Time remaining: %d minutes (Press 's' + Enter to skip)\n", totalMinutes)
+	fmt.Printf("  Time remaining: %d minutes (Press 's' + Enter to skip)", totalMinutes)
 
 	for remaining > 0 {
 		select {
