@@ -162,42 +162,6 @@ At the end of each session, you'll see statistics including:
 
 Your session data (including the title and goal if provided) is automatically saved to a SQLite database at `~/.pomo/pomo.db` for future reference.
 
-### Session Titles
-
-Give your pomodoro sessions meaningful titles to track what you're working on:
-
-```bash
-# Start a session with a title
-pomo -t "Implementing user authentication"
-pomo --title "Code review"
-pomo -t "Learning React hooks" -w 45
-```
-
-Titles are displayed during the session and appear in your reports, making it easy to see what you accomplished.
-
-### Goals and Titles
-
-**Goals** let you group multiple sessions (with different titles) under a common objective. This is perfect for tracking progress toward larger projects or learning objectives:
-
-```bash
-# Multiple sessions working toward the same goal
-pomo -g "Launch MVP" -t "Set up database schema"
-pomo -g "Launch MVP" -t "Build REST API"
-pomo -g "Launch MVP" -t "Create landing page"
-pomo -g "Launch MVP" -t "Write tests"
-
-# Different goal, different sessions
-pomo -g "Learn Go" -t "Read Go documentation"
-pomo -g "Learn Go" -t "Build CLI tool"
-pomo -g "Learn Go" -t "Practice concurrency"
-```
-
-**When to use what:**
-- **Goal** - The overarching objective (e.g., "Launch MVP", "Learn Go", "Q1 Sprint")
-- **Title** - The specific task within that goal (e.g., "Implement authentication", "Study channels")
-
-Goals appear alongside titles in detailed reports, making it easy to see all sessions related to a specific objective.
-
 ### Reports
 
 Generate reports for different time periods:
@@ -238,7 +202,3 @@ This tool implements this technique with customizable durations to fit your work
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
